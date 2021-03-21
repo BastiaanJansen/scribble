@@ -51,8 +51,6 @@ public class DrawingView extends View {
         super.onDraw(canvas);
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
-
-        onDrawListener.onDraw(canvasBitmap);
     }
 
     @Override
@@ -68,6 +66,7 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_MOVE:
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.lineTo(touchX, touchY);
+                onDrawListener.onDraw(new OnDrawEvent(touchX, touchY, paintColor));
                 break;
             case MotionEvent.ACTION_UP:
                 drawPath.lineTo(touchX, touchY);
@@ -85,5 +84,11 @@ public class DrawingView extends View {
     public void setColor(int color) {
         paintColor = color;
         drawPaint.setColor(color);
+    }
+
+    public void update(OnDrawEvent event) {
+        drawPath.moveTo(event.getX(), event.getY());
+        drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+        drawCanvas.drawPath(drawPath, drawPaint);
     }
 }

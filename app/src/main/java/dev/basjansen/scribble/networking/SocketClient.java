@@ -1,46 +1,45 @@
-package dev.basjansen.scribble;
+package dev.basjansen.scribble.networking;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 
-public class DrawCanvasSyncClient implements Runnable {
+public class SocketClient implements Runnable {
 
     private final InetSocketAddress address;
+    private final SocketListener socketListener;
 
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
 
-    public DrawCanvasSyncClient(InetSocketAddress address) throws IOException {
+    public SocketClient(InetSocketAddress address, SocketListener socketListener) throws IOException {
         this.address = address;
+        this.socketListener = socketListener;
     }
 
     @Override
     public synchronized void run() {
         try {
+            System.out.println("[Client]: Connecting to server");
             socket = new Socket(address.getHostName(), address.getPort());
 
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println("[Client]: Connected to: " + socket.getInetAddress().getHostAddress());
 
-            System.out.println(in.readLine());
+            ClientHandler clientHandler = new ClientHandler(socket, socketListener);
+            new Thread(clientHandler).start();
+
+            clientHandler.send("received");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void send(String data) throws IOException {
-        out.write(data);
-        out.flush();
+        out.println(data);
     }
 
     public void stop(String data) throws IOException {

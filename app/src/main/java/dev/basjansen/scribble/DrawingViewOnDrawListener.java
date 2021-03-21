@@ -1,33 +1,55 @@
 package dev.basjansen.scribble;
 
-import android.graphics.Bitmap;
-import android.os.Build;
+import androidx.annotation.Nullable;
 
-import androidx.annotation.RequiresApi;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
+import java.util.Map;
 
-public class DrawingViewOnDrawListener implements OnDrawListener {
+public class DrawingViewOnDrawListener implements OnDrawListener, EventListener<DocumentSnapshot> {
 
-    @Override
-    public void onDraw(Bitmap bitmap) {
-        Thread thread = new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void run() {
-                String encoded = encode(bitmap);
-            }
-        });
+    private final FirebaseFirestore db;
+    private final ObjectMapper objectMapper;
+    private OnDrawListener onDrawListener;
 
-        thread.start();
+    public DrawingViewOnDrawListener(FirebaseFirestore db) {
+        this.db = db;
+        this.objectMapper = new ObjectMapper();
+
+        db.collection("drawings").document("1").addSnapshotListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String encode(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] bitmapByteArray = byteArrayOutputStream.toByteArray();
-        return Base64.getEncoder().encodeToString(bitmapByteArray);
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onDraw(OnDrawEvent event) {
+        Map<String, Object> map = objectMapper.convertValue(event, Map.class);
+        System.out.println(map);
+        db.collection("drawings").document("1")
+                .set(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("Success");
+                    }
+                });
+    }
+
+    @Override
+    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+        Map<String, Object> map = value.getData();
+        OnDrawEvent onDrawEvent = objectMapper.convertValue(map, OnDrawEvent.class);
+        System.out.println("UPDATE");
+        if (onDrawListener != null)
+            onDrawListener.onDraw(onDrawEvent);
+    }
+
+    public void setOnDrawListener(OnDrawListener onDrawListener) {
+        this.onDrawListener = onDrawListener;
     }
 }
