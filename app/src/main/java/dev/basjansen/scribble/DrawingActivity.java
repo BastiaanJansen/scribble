@@ -1,18 +1,17 @@
 package dev.basjansen.scribble;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import dev.basjansen.scribble.services.DrawingService;
+import dev.basjansen.scribble.services.FirebaseDrawingSaveStrategy;
 
 public class DrawingActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -40,8 +39,8 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     public void saveDrawing() {
-        DrawingService drawingService = new DrawingService();
-        drawingService.save(drawingView.getCanvasBitmap());
+        DrawingService drawingService = new DrawingService(new FirebaseDrawingSaveStrategy());
+        drawingService.save(drawingView.getCanvasBitmap(), "My drawing");
     }
 
     public void setupDefaultDrawingSettings() {
