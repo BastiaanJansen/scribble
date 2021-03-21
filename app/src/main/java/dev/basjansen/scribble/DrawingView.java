@@ -1,11 +1,13 @@
 package dev.basjansen.scribble;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,12 +19,12 @@ public class DrawingView extends View {
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
 
-    private OnDrawListener onDrawListener;
+    public DrawingView(Context context) {
+        this(context, null);
+    }
 
-    public DrawingView(Context context, OnDrawListener onDrawListener) {
-        super(context);
-
-        this.onDrawListener = onDrawListener;
+    public DrawingView(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
         drawPath = new Path();
         drawPaint = new Paint();
@@ -53,6 +55,7 @@ public class DrawingView extends View {
         canvas.drawPath(drawPath, drawPaint);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         canvasPaint.setColor(paintColor);
@@ -66,7 +69,6 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_MOVE:
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.lineTo(touchX, touchY);
-                onDrawListener.onDraw(new OnDrawEvent(touchX, touchY, paintColor));
                 break;
             case MotionEvent.ACTION_UP:
                 drawPath.lineTo(touchX, touchY);
@@ -86,9 +88,7 @@ public class DrawingView extends View {
         drawPaint.setColor(color);
     }
 
-    public void update(OnDrawEvent event) {
-        drawPath.moveTo(event.getX(), event.getY());
-        drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-        drawCanvas.drawPath(drawPath, drawPaint);
+    public void setStrokeWidth(float width) {
+        drawPaint.setStrokeWidth(width);
     }
 }
