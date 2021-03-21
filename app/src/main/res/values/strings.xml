@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Scribble</string>
+    <string name="create_new_drawing">Create new drawing</string>
 </resources>

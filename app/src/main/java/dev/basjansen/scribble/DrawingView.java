@@ -91,4 +91,8 @@ public class DrawingView extends View {
     public void setStrokeWidth(float width) {
         drawPaint.setStrokeWidth(width);
     }
+
+    public Bitmap getCanvasBitmap() {
+        return canvasBitmap;
+    }
 }
