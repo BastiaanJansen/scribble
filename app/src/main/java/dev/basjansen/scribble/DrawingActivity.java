@@ -58,7 +58,7 @@ public class DrawingActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
-        saveDrawing(new LocalDrawingService(), "localDrawing");
+        saveDrawing(new LocalDrawingService(this), "localDrawing");
         super.onBackPressed();
     }
 
@@ -86,7 +86,7 @@ public class DrawingActivity extends AppCompatActivity {
 
     public void setupDefaultDrawingSettings() {
         drawingView.setColor(Color.BLACK);
-        drawingView.setStrokeWidth(35);
+        drawingView.setStrokeWidth(15);
     }
 
     public void setupDrawButtons() {
