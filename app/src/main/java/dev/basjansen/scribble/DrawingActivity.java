@@ -98,6 +98,7 @@ public class DrawingActivity extends AppCompatActivity {
         Button setStrokeWidthButtonSmall = findViewById(R.id.adjust_width_button_1);
         Button setStrokeWidthButtonMedium = findViewById(R.id.adjust_width_button_2);
         Button setStrokeWidthButtonLarge = findViewById(R.id.adjust_width_button_3);
+        Button eraseAllStrokesButton = findViewById(R.id.erase_button);
 
         redColorButton.setOnClickListener((View v) -> drawingView.setColor(Color.RED));
         blueColorButton.setOnClickListener((View v) -> drawingView.setColor(Color.BLUE));
@@ -108,5 +109,9 @@ public class DrawingActivity extends AppCompatActivity {
         setStrokeWidthButtonSmall.setOnClickListener((View v) -> drawingView.setStrokeWidth(5));
         setStrokeWidthButtonMedium.setOnClickListener((View v) -> drawingView.setStrokeWidth(15));
         setStrokeWidthButtonLarge.setOnClickListener((View v) -> drawingView.setStrokeWidth(30));
+        eraseAllStrokesButton.setOnClickListener((View v) -> {
+            Bitmap bitmapToClear = drawingView.getCanvasBitmap();
+            bitmapToClear.eraseColor(Color.TRANSPARENT);
+        });
     }
 }
