@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import dev.basjansen.scribble.services.DrawingService;
-import dev.basjansen.scribble.services.FirebaseDrawingSaveStrategy;
+import dev.basjansen.scribble.services.FirebaseDrawingServiceStrategy;
 
 public class DrawingActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -39,7 +39,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     public void saveDrawing() {
-        DrawingService drawingService = new DrawingService(new FirebaseDrawingSaveStrategy());
+        DrawingService drawingService = new DrawingService(new FirebaseDrawingServiceStrategy());
         drawingService.save(drawingView.getCanvasBitmap(), "My drawing");
     }
 
