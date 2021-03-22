@@ -108,6 +108,11 @@ public class DrawingView extends View {
         }
     }
 
+    public void clear() {
+        canvasBitmap.eraseColor(Color.TRANSPARENT);
+        invalidate();
+    }
+
     public boolean getErase() {
         return erase;
     }
@@ -124,5 +129,9 @@ public class DrawingView extends View {
 
     public Bitmap getCanvasBitmap() {
         return canvasBitmap;
+    }
+
+    public Canvas getDrawCanvas() {
+        return getDrawCanvas();
     }
 }
