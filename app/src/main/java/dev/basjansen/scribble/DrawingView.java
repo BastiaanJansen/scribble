@@ -7,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,9 +18,11 @@ public class DrawingView extends View {
 
     private Path drawPath;
     private Paint drawPaint, canvasPaint;
-    private int paintColor;
+    private float strokeWidth;
+    private int drawColor;
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
+    private boolean erase;
 
     public DrawingView(Context context) {
         this(context, null);
@@ -25,15 +30,20 @@ public class DrawingView extends View {
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        this.erase = false;
+        this.strokeWidth = 15;
+        this.drawColor = Color.BLACK;
+        setup();
+    }
 
+    public void setup() {
         drawPath = new Path();
         drawPaint = new Paint();
 
-        paintColor = Color.BLACK;
-
-        drawPaint.setColor(paintColor);
+        drawPaint.setColor(drawColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(5);
+        drawPaint.setStrokeWidth(strokeWidth);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -58,7 +68,6 @@ public class DrawingView extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        canvasPaint.setColor(paintColor);
         float touchX = event.getX();
         float touchY = event.getY();
 
@@ -83,12 +92,33 @@ public class DrawingView extends View {
         return true;
     }
 
+    public void setErase(boolean erase) {
+        this.erase = erase;
+        this.drawPaint = new Paint();
+
+        setup();
+
+        if (erase) {
+            PorterDuff.Mode mode = PorterDuff.Mode.CLEAR;
+            PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(Color.WHITE, mode);
+
+            drawPaint.setColorFilter(porterDuffColorFilter);
+            drawPaint.setXfermode(new PorterDuffXfermode(mode));
+            drawPaint.setColor(Color.WHITE);
+        }
+    }
+
+    public boolean getErase() {
+        return erase;
+    }
+
     public void setColor(int color) {
-        paintColor = color;
+        this.drawColor = color;
         drawPaint.setColor(color);
     }
 
     public void setStrokeWidth(float width) {
+        this.strokeWidth = width;
         drawPaint.setStrokeWidth(width);
     }
 

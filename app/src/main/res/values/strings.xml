@@ -3,4 +3,5 @@
     <string name="create_new_drawing">Create new drawing</string>
     <string name="save">Save</string>
     <string name="done">Done</string>
+    <string name="reset">Reset</string>
 </resources>
