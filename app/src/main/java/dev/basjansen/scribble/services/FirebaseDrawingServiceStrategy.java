@@ -43,7 +43,8 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
 
     @Override
     public void save(Bitmap bitmap, String name) {
-        uploadBitmap(bitmap, String.valueOf(new Date().getTime()), (UploadTask.TaskSnapshot taskSnapshot) -> {
+        String location = "images/" + new Date().getTime() + ".png";
+        uploadBitmap(bitmap, location, (UploadTask.TaskSnapshot taskSnapshot) -> {
             String path = taskSnapshot.getMetadata().getPath();
             Drawing drawing = new Drawing(name, path);
             db.collection(DrawingService.COLLECTION_PATH).add(objectMapper.convertValue(drawing, Map.class));
@@ -66,8 +67,10 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
     @Override
     public void fetch(String documentPath, OnFetchSuccessListener<Drawing> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
         db.collection(DrawingService.COLLECTION_PATH).document(documentPath).addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
-            if (error != null || value == null)
+            if (error != null || value == null) {
                 onFetchFailureListener.onFailure(error);
+                return;
+            }
 
             Map<String, Object> map = value.getData();
             Drawing drawing = objectMapper.convertValue(map, Drawing.class);
@@ -75,8 +78,8 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
         });
     }
 
-    private void uploadBitmap(Bitmap bitmap, String name, OnSuccessListener<UploadTask.TaskSnapshot> onSuccessListener, OnFailureListener onFailureListener) {
-        StorageReference drawingRef = storageReference.child("images/" + name + ".png");
+    private void uploadBitmap(Bitmap bitmap, String path, OnSuccessListener<UploadTask.TaskSnapshot> onSuccessListener, OnFailureListener onFailureListener) {
+        StorageReference drawingRef = storageReference.child(path);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
