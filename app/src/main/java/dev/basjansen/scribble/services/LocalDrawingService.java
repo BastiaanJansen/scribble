@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import dev.basjansen.scribble.models.Drawing;
 
-public class LocalDrawingServiceStrategy implements DrawingServiceStrategy {
+public class LocalDrawingService implements DrawingService {
     @Override
     public void save(Bitmap bitmap, String name) {
 

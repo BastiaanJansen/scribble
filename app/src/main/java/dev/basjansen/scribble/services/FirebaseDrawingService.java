@@ -1,14 +1,19 @@
 package dev.basjansen.scribble.services;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -18,27 +23,28 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 import dev.basjansen.scribble.models.Drawing;
 
-public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
+public class FirebaseDrawingService implements DrawingService {
+
+    private final static String COLLECTION_PATH = "drawings";
 
     private final FirebaseFirestore db;
     private final FirebaseStorage firebaseStorage;
     private final StorageReference storageReference;
     private final ObjectMapper objectMapper;
 
-    public FirebaseDrawingServiceStrategy() {
+    public FirebaseDrawingService() {
         this.db = FirebaseFirestore.getInstance();
         this.firebaseStorage = FirebaseStorage.getInstance();
         this.storageReference = firebaseStorage.getReference();
         this.objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     }
 
     @Override
@@ -47,14 +53,14 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
         uploadBitmap(bitmap, location, (UploadTask.TaskSnapshot taskSnapshot) -> {
             String path = taskSnapshot.getMetadata().getPath();
             Drawing drawing = new Drawing(name, path);
-            db.collection(DrawingService.COLLECTION_PATH).add(objectMapper.convertValue(drawing, Map.class));
+            db.collection(COLLECTION_PATH).add(objectMapper.convertValue(drawing, Map.class));
         }, Throwable::printStackTrace);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void fetch(OnFetchSuccessListener<Drawing[]> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
-        db.collection(DrawingService.COLLECTION_PATH).get().addOnSuccessListener((QuerySnapshot queryDocumentSnapshots) -> {
+        db.collection(COLLECTION_PATH).get().addOnSuccessListener((QuerySnapshot queryDocumentSnapshots) -> {
             Drawing[] drawings = queryDocumentSnapshots
                     .getDocuments()
                     .stream()
@@ -66,7 +72,7 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
 
     @Override
     public void fetch(String documentPath, OnFetchSuccessListener<Drawing> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
-        db.collection(DrawingService.COLLECTION_PATH).document(documentPath).addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
+        db.collection(COLLECTION_PATH).document(documentPath).addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
             if (error != null || value == null) {
                 onFetchFailureListener.onFailure(error);
                 return;
@@ -76,6 +82,16 @@ public class FirebaseDrawingServiceStrategy implements DrawingServiceStrategy {
             Drawing drawing = objectMapper.convertValue(map, Drawing.class);
             onFetchSuccessListener.onSuccess(drawing);
         });
+    }
+
+    public void downloadBitmap(String documentPath, OnFetchSuccessListener<Bitmap> onFetchSuccessListener, OnFailureListener onFailureListener) {
+        final long ONE_MEGABYTE = 1024 * 1024;
+        StorageReference imageRef = storageReference.child(documentPath);
+
+        imageRef.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(bytes -> {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            onFetchSuccessListener.onSuccess(bitmap);
+        }).addOnFailureListener(onFailureListener);
     }
 
     private void uploadBitmap(Bitmap bitmap, String path, OnSuccessListener<UploadTask.TaskSnapshot> onSuccessListener, OnFailureListener onFailureListener) {

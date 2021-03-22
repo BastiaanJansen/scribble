@@ -1,5 +1,4 @@
 package dev.basjansen.scribble;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,14 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
-import dev.basjansen.scribble.services.FirebaseDrawingServiceStrategy;
-import dev.basjansen.scribble.services.OnFetchFailureListener;
-import dev.basjansen.scribble.services.OnFetchSuccessListener;
+import dev.basjansen.scribble.services.FirebaseDrawingService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupDrawingsList() {
-        DrawingService drawingService = new DrawingService(new FirebaseDrawingServiceStrategy());
+        DrawingService drawingService = new FirebaseDrawingService();
 
         RecyclerView drawingsRecycleView = findViewById(R.id.drawings_reclycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

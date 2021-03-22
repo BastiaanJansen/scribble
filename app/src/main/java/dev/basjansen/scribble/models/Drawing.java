@@ -1,6 +1,10 @@
 package dev.basjansen.scribble.models;
 
-public class Drawing {
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
+
+public class Drawing implements Serializable  {
     private String name;
     private String path;
 

@@ -1,5 +1,6 @@
 package dev.basjansen.scribble;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,18 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
-import dev.basjansen.scribble.services.FirebaseDrawingServiceStrategy;
+import dev.basjansen.scribble.services.FirebaseDrawingService;
 
 public class DrawingActivity extends AppCompatActivity {
-    private FirebaseFirestore db;
     private DrawingView drawingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing);
-        db = FirebaseFirestore.getInstance();
 
         drawingView = findViewById(R.id.drawing_view);
 
@@ -34,13 +34,12 @@ public class DrawingActivity extends AppCompatActivity {
         if (item.getItemId() != android.R.id.home)
             return super.onOptionsItemSelected(item);
 
-        saveDrawing();
+        saveDrawing(new FirebaseDrawingService(), "My drawing");
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveDrawing() {
-        DrawingService drawingService = new DrawingService(new FirebaseDrawingServiceStrategy());
-        drawingService.save(drawingView.getCanvasBitmap(), "My drawing");
+    public void saveDrawing(DrawingService drawingService, String name) {
+        drawingService.save(drawingView.getCanvasBitmap(), name);
     }
 
     public void setupDefaultDrawingSettings() {
