@@ -1,19 +1,24 @@
 package dev.basjansen.scribble;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.services.FirebaseDrawingService;
+import dev.basjansen.scribble.services.LocalDrawingService;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class DrawingActivity extends AppCompatActivity {
     private DrawingView drawingView;
@@ -30,21 +35,58 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_drawing_menu, menu);
+
+        MenuItem saveDrawingButton = menu.findItem(R.id.save_drawing_button);
+        saveDrawingButton.setOnMenuItemClickListener(this::onDoneMenuItemClicked);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() != android.R.id.home)
             return super.onOptionsItemSelected(item);
 
-        saveDrawing(new FirebaseDrawingService(), "My drawing");
+        onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onBackPressed() {
+        requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
+        saveDrawing(new LocalDrawingService(), "localDrawing");
+        super.onBackPressed();
+    }
+
+    public boolean isEmptyBitmap(Bitmap bitmap) {
+        Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+        return emptyBitmap.sameAs(bitmap);
+    }
+
+    public boolean onDoneMenuItemClicked(MenuItem item) {
+        if (isEmptyBitmap(drawingView.getCanvasBitmap())) {
+            Toast.makeText(this, "An empty drawing cannot be saved", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        saveDrawing(new FirebaseDrawingService(), "My new drawing");
+        Toast.makeText(this, "Drawing saved", Toast.LENGTH_SHORT).show();
+        finish();
+        return true;
+    }
+
     public void saveDrawing(DrawingService drawingService, String name) {
-        drawingService.save(drawingView.getCanvasBitmap(), name);
+        Bitmap drawing = drawingView.getCanvasBitmap();
+        drawingService.save(drawing, name);
     }
 
     public void setupDefaultDrawingSettings() {
         drawingView.setColor(Color.BLACK);
-        drawingView.setStrokeWidth(15);
+        drawingView.setStrokeWidth(35);
     }
 
     public void setupDrawButtons() {

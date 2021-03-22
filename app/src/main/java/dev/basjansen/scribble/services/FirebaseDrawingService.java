@@ -36,13 +36,12 @@ public class FirebaseDrawingService implements DrawingService {
     private final static String COLLECTION_PATH = "drawings";
 
     private final FirebaseFirestore db;
-    private final FirebaseStorage firebaseStorage;
     private final StorageReference storageReference;
     private final ObjectMapper objectMapper;
 
     public FirebaseDrawingService() {
         this.db = FirebaseFirestore.getInstance();
-        this.firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         this.storageReference = firebaseStorage.getReference();
         this.objectMapper = new ObjectMapper();
     }
@@ -51,7 +50,7 @@ public class FirebaseDrawingService implements DrawingService {
     public void save(Bitmap bitmap, String name) {
         String location = "images/" + new Date().getTime() + ".png";
         uploadBitmap(bitmap, location, (UploadTask.TaskSnapshot taskSnapshot) -> {
-            String path = taskSnapshot.getMetadata().getPath();
+            String path = Objects.requireNonNull(taskSnapshot.getMetadata()).getPath();
             Drawing drawing = new Drawing(name, path);
             db.collection(COLLECTION_PATH).add(objectMapper.convertValue(drawing, Map.class));
         }, Throwable::printStackTrace);
