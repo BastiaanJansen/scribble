@@ -85,7 +85,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     public void setupDefaultDrawingSettings() {
-//        drawingView.setColor(Color.BLACK);
+        drawingView.setColor(Color.BLACK);
         drawingView.setStrokeWidth(15);
     }
 
@@ -95,7 +95,7 @@ public class DrawingActivity extends AppCompatActivity {
         Button blackColorButton = findViewById(R.id.black_color_button);
         Button greenColorButton = findViewById(R.id.green_color_button);
         Button yellowColorButton = findViewById(R.id.yellow_color_button);
-        Button whiteColorButton = findViewById(R.id.white_color_button);
+        Button eraseButton = findViewById(R.id.erase_button);
         Button setStrokeWidthButtonSmall = findViewById(R.id.adjust_width_button_1);
         Button setStrokeWidthButtonMedium = findViewById(R.id.adjust_width_button_2);
         Button setStrokeWidthButtonLarge = findViewById(R.id.adjust_width_button_3);
@@ -105,7 +105,7 @@ public class DrawingActivity extends AppCompatActivity {
         blackColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.BLACK));
         greenColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.GREEN));
         yellowColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.YELLOW));
-        whiteColorButton.setOnClickListener((View v) -> drawingView.setErase(true));
+        eraseButton.setOnClickListener((View v) -> drawingView.setErase(true));
 
         setStrokeWidthButtonSmall.setOnClickListener((View v) -> drawingView.setStrokeWidth(5));
         setStrokeWidthButtonMedium.setOnClickListener((View v) -> drawingView.setStrokeWidth(15));
