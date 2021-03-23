@@ -1,4 +1,4 @@
-package dev.basjansen.scribble;
+package dev.basjansen.scribble.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

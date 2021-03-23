@@ -13,24 +13,30 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.auth.FirebaseAuth;
 
-import dev.basjansen.scribble.services.DrawingService;
+import java.util.Date;
+
+import dev.basjansen.scribble.models.Drawing;
+import dev.basjansen.scribble.models.User;
+import dev.basjansen.scribble.services.DrawingSaver;
 import dev.basjansen.scribble.services.FirebaseDrawingService;
 import dev.basjansen.scribble.services.LocalDrawingService;
+import dev.basjansen.scribble.views.DrawingView;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class DrawingActivity extends AppCompatActivity {
     private DrawingView drawingView;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         drawingView = findViewById(R.id.drawing_view);
 
         setupDefaultDrawingSettings();
@@ -82,9 +88,11 @@ public class DrawingActivity extends AppCompatActivity {
         return true;
     }
 
-    public void saveDrawing(DrawingService drawingService, String name) {
-        Bitmap drawing = drawingView.getCanvasBitmap();
-        drawingService.save(drawing, name);
+    public void saveDrawing(DrawingSaver drawingSaver, String name) {
+        Bitmap bitmap = drawingView.getCanvasBitmap();
+        String path = "images/" + new Date().getTime() + ".png";
+        Drawing drawing = new Drawing(name, path, User.fromFirebaseUser(firebaseAuth.getCurrentUser()));
+        drawingSaver.save(bitmap, drawing);
     }
 
     public void setupDefaultDrawingSettings() {

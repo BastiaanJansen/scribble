@@ -2,30 +2,29 @@ package dev.basjansen.scribble;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
-
 import dev.basjansen.scribble.models.Drawing;
+import dev.basjansen.scribble.services.FirebaseDrawingService;
 
 public class DrawingsAdapter extends RecyclerView.Adapter<DrawingsAdapter.ViewHolder> {
 
     private final Context context;
 
     private Drawing[] drawings;
+    private final FirebaseDrawingService drawingService;
 
     public DrawingsAdapter(Context context, Drawing[] drawings) {
         this.drawings = drawings;
         this.context = context;
+        this.drawingService = new FirebaseDrawingService();
     }
 
     public DrawingsAdapter(Context context) {
@@ -41,8 +40,12 @@ public class DrawingsAdapter extends RecyclerView.Adapter<DrawingsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.nameTextView.setText(drawings[position].getName());
-        holder.drawing = drawings[position];
+        Drawing drawing = drawings[position];
+        holder.drawingNameTextView.setText(drawing.getName());
+        holder.userNameTextView.setText(drawing.getUser().getDisplayName());
+        holder.drawing = drawing;
+
+        drawingService.downloadBitmap(drawing.getPath(), holder.drawingImageView::setImageBitmap, Exception::printStackTrace);
     }
 
     @Override
@@ -56,12 +59,16 @@ public class DrawingsAdapter extends RecyclerView.Adapter<DrawingsAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameTextView;
+        TextView drawingNameTextView;
+        TextView userNameTextView;
+        ImageView drawingImageView;
         Drawing drawing;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.nameTextView = itemView.findViewById(R.id.drawing_name);
+            this.drawingNameTextView = itemView.findViewById(R.id.drawing_name);
+            this.userNameTextView = itemView.findViewById(R.id.row_drawing_user_name);
+            this.drawingImageView = itemView.findViewById(R.id.row_drawing_view);
             itemView.setOnClickListener(this::onClick);
         }
 

@@ -3,25 +3,25 @@ package dev.basjansen.scribble;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.services.FirebaseDrawingService;
-import dev.basjansen.scribble.services.OnFetchSuccessListener;
 
 public class ViewDrawingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_view_drawing);
+        setContentView(R.layout.activity_view_drawing);
 
         FirebaseDrawingService drawingService = new FirebaseDrawingService();
 
-        ImageView imageView = new ImageView(this);
+        TextView userNameTextView = findViewById(R.id.user_name);
+        ImageView drawingImageView = findViewById(R.id.image_view);
 
         Intent intent = getIntent();
 
@@ -29,11 +29,9 @@ public class ViewDrawingActivity extends AppCompatActivity {
             if (intent.getExtras().containsKey("drawing")) {
                 Drawing drawing = (Drawing) intent.getExtras().get("drawing");
                 setTitle(drawing.getName());
-
-                drawingService.downloadBitmap(drawing.getPath(), imageView::setImageBitmap, Exception::printStackTrace);
+                userNameTextView.setText(drawing.getUser().getDisplayName());
+                drawingService.downloadBitmap(drawing.getPath(), drawingImageView::setImageBitmap, Exception::printStackTrace);
             }
         }
-
-        setContentView(imageView);
     }
 }

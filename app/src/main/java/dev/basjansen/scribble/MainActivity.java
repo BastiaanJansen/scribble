@@ -1,21 +1,23 @@
 package dev.basjansen.scribble;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.services.FirebaseDrawingService;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         setupDrawingsList();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setupDrawingsList() {
-        DrawingService drawingService = new FirebaseDrawingService();
+        FirebaseDrawingService drawingSaver = new FirebaseDrawingService();
 
         RecyclerView drawingsRecycleView = findViewById(R.id.drawings_reclycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         DrawingsAdapter adapter = new DrawingsAdapter(this, new Drawing[]{});
         drawingsRecycleView.setAdapter(adapter);
 
-        drawingService.fetch((Drawing[] drawings) -> {
+        drawingSaver.fetch((Drawing[] drawings) -> {
             adapter.setDrawings(drawings);
             adapter.notifyDataSetChanged();
         }, Exception::printStackTrace);

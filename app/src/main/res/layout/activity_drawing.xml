@@ -7,16 +7,18 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <dev.basjansen.scribble.DrawingView
+    <dev.basjansen.scribble.views.DrawingView
         android:id="@+id/drawing_view"
-        android:layout_width="412dp"
-        android:layout_height="585dp"
+        android:layout_width="409dp"
+        android:layout_height="535dp"
         android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#D5D5D5"
@@ -24,8 +26,10 @@
         android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing_view">
+        app:layout_constraintTop_toBottomOf="@+id/drawing_view"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:id="@+id/button_row_1"
@@ -108,8 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginBottom="?android:attr/actionBarSize">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/adjust_width_button_1"
