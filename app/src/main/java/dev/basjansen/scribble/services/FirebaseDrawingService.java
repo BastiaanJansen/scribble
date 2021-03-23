@@ -49,8 +49,6 @@ public class FirebaseDrawingService implements DrawingSaver {
     public void save(Bitmap bitmap, Drawing drawing) {
         uploadBitmap(bitmap, drawing.getPath(), (UploadTask.TaskSnapshot taskSnapshot) -> {
             Map<String, Object> map = objectMapper.convertValue(drawing, Map.class);
-//            map.put("user", db.collection(UserService.COLLECTION_PATH).document(drawing.getUser().getUid()));
-
             db.collection(COLLECTION_PATH).add(map);
         }, Throwable::printStackTrace);
     }
