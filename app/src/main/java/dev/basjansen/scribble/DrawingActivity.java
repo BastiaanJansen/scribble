@@ -19,9 +19,7 @@ import java.util.Date;
 
 import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.models.User;
-import dev.basjansen.scribble.services.DrawingSaver;
-import dev.basjansen.scribble.services.FirebaseDrawingService;
-import dev.basjansen.scribble.services.LocalDrawingService;
+import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.views.DrawingView;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -30,6 +28,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class DrawingActivity extends AppCompatActivity {
     private DrawingView drawingView;
     private FirebaseAuth firebaseAuth;
+    private DrawingService drawingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,7 @@ public class DrawingActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         drawingView = findViewById(R.id.drawing_view);
+        drawingService = new DrawingService();
 
         setupDefaultDrawingSettings();
         setupDrawButtons();
@@ -63,13 +63,11 @@ public class DrawingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onBackPressed() {
-        requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 1);
-        saveDrawing(new LocalDrawingService(this), "localDrawing");
-        super.onBackPressed();
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.M)
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
 
     public boolean isEmptyBitmap(Bitmap bitmap) {
         Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
@@ -82,17 +80,17 @@ public class DrawingActivity extends AppCompatActivity {
             return false;
         }
 
-        saveDrawing(new FirebaseDrawingService(), "My new drawing");
+        saveDrawing( "My new drawing");
         Toast.makeText(this, "Drawing saved", Toast.LENGTH_SHORT).show();
         finish();
         return true;
     }
 
-    public void saveDrawing(DrawingSaver drawingSaver, String name) {
+    public void saveDrawing(String name) {
         Bitmap bitmap = drawingView.getCanvasBitmap();
         String path = "images/" + new Date().getTime() + ".png";
         Drawing drawing = new Drawing(name, path, User.fromFirebaseUser(firebaseAuth.getCurrentUser()));
-        drawingSaver.save(bitmap, drawing);
+        drawingService.save(bitmap, drawing);
     }
 
     public void setupDefaultDrawingSettings() {

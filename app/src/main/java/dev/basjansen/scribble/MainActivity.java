@@ -11,15 +11,13 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.concurrent.TimeUnit;
-
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.FirebaseDrawingService;
+import dev.basjansen.scribble.services.DrawingService;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseDrawingService drawingService;
+    private DrawingService drawingService;
     private DrawingsAdapter drawingsAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Gallery");
 
-        drawingService = new FirebaseDrawingService();
+        drawingService = new DrawingService();
         drawingsAdapter = new DrawingsAdapter(this);
 
         setupFAB();

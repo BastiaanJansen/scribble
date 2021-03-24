@@ -27,7 +27,7 @@ import java.util.Objects;
 import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.user.UserService;
 
-public class FirebaseDrawingService implements DrawingSaver {
+public class DrawingService {
 
     private final static String COLLECTION_PATH = "drawings";
 
@@ -36,7 +36,7 @@ public class FirebaseDrawingService implements DrawingSaver {
     private final ObjectMapper objectMapper;
     private final FirebaseAuth firebaseAuth;
 
-    public FirebaseDrawingService() {
+    public DrawingService() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         this.storageReference = firebaseStorage.getReference();
@@ -45,7 +45,6 @@ public class FirebaseDrawingService implements DrawingSaver {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public void save(Bitmap bitmap, Drawing drawing) {
         uploadBitmap(bitmap, drawing.getPath(), (UploadTask.TaskSnapshot taskSnapshot) -> {
             Map<String, Object> map = objectMapper.convertValue(drawing, Map.class);

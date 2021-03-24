@@ -12,19 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.FirebaseDrawingService;
+import dev.basjansen.scribble.services.DrawingService;
 
 public class DrawingsAdapter extends RecyclerView.Adapter<DrawingsAdapter.ViewHolder> {
 
     private final Context context;
 
     private Drawing[] drawings;
-    private final FirebaseDrawingService drawingService;
+    private final DrawingService drawingService;
 
     public DrawingsAdapter(Context context, Drawing[] drawings) {
         this.drawings = drawings;
         this.context = context;
-        this.drawingService = new FirebaseDrawingService();
+        this.drawingService = new DrawingService();
     }
 
     public DrawingsAdapter(Context context) {

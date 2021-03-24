@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.FirebaseDrawingService;
+import dev.basjansen.scribble.services.DrawingService;
 
 public class ViewDrawingActivity extends AppCompatActivity {
 
@@ -18,7 +17,7 @@ public class ViewDrawingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_drawing);
 
-        FirebaseDrawingService drawingService = new FirebaseDrawingService();
+        DrawingService drawingService = new DrawingService();
 
         TextView userNameTextView = findViewById(R.id.user_name);
         ImageView drawingImageView = findViewById(R.id.image_view);
