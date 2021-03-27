@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
+import dev.basjansen.scribble.views.DrawingBottomSheet;
 import dev.basjansen.scribble.views.DrawingView;
 import dev.basjansen.scribble.views.SaveDrawingBottomSheetFragment;
 
@@ -30,7 +31,9 @@ public class DrawingActivity extends AppCompatActivity {
         drawingView = findViewById(R.id.drawing_view);
 
         setupDefaultDrawingSettings();
-        setupDrawSheet();
+
+        DrawingBottomSheet drawingBottomSheet = new DrawingBottomSheet(this, drawingView);
+        getSupportFragmentManager().beginTransaction().add(R.id.drawing_layout, drawingBottomSheet, DrawingActivity.class.getName()).commit();
     }
 
     @Override
@@ -73,45 +76,5 @@ public class DrawingActivity extends AppCompatActivity {
     public void setupDefaultDrawingSettings() {
         drawingView.setColor(Color.BLACK);
         drawingView.setStrokeWidth(15);
-    }
-
-    public void setupDrawSheet() {
-        Button redColorButton = findViewById(R.id.red_color_button);
-        Button blueColorButton = findViewById(R.id.blue_color_button);
-        Button blackColorButton = findViewById(R.id.black_color_button);
-        Button greenColorButton = findViewById(R.id.green_color_button);
-        Button yellowColorButton = findViewById(R.id.yellow_color_button);
-        Button eraseButton = findViewById(R.id.erase_button);
-        Button setStrokeWidthButtonSmall = findViewById(R.id.adjust_width_button_1);
-        Button setStrokeWidthButtonMedium = findViewById(R.id.adjust_width_button_2);
-        Button setStrokeWidthButtonLarge = findViewById(R.id.adjust_width_button_3);
-        Button resetButton = findViewById(R.id.reset_button);
-        Button colorPickerButton = findViewById(R.id.color_picker_button);
-
-        redColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.RED));
-        blueColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.BLUE));
-        blackColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.BLACK));
-        greenColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.GREEN));
-        yellowColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.YELLOW));
-        eraseButton.setOnClickListener((View v) -> drawingView.setErase(true));
-
-        setStrokeWidthButtonSmall.setOnClickListener((View v) -> drawingView.setStrokeWidth(5));
-        setStrokeWidthButtonMedium.setOnClickListener((View v) -> drawingView.setStrokeWidth(15));
-        setStrokeWidthButtonLarge.setOnClickListener((View v) -> drawingView.setStrokeWidth(30));
-        resetButton.setOnClickListener((View v) -> drawingView.clear());
-
-        colorPickerButton.setOnClickListener((View v) -> {
-            ColorPicker colorPicker = new ColorPicker(this);
-            colorPicker.setColor(drawingView.getColor());
-            colorPicker.show();
-            colorPicker.enableAutoClose();
-
-            colorPicker.setCallback(color -> drawingView.setColor(color));
-        });
-    }
-
-    public void onColorButtonClick(int color) {
-        drawingView.setColor(color);
-        drawingView.setErase(false);
     }
 }

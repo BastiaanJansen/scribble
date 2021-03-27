@@ -20,12 +20,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 
 import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.services.user.UserService;
 
 public class DrawingService {
 

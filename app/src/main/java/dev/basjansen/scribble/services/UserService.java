@@ -1,4 +1,4 @@
-package dev.basjansen.scribble.services.user;
+package dev.basjansen.scribble.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseUser;

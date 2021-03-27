@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    android:width="40dp"
+    android:height="40dp"
+    android:maxHeight="40dp"
+    android:maxWidth="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:backgroundTint="#000000"
+    app:cornerRadius="40dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
