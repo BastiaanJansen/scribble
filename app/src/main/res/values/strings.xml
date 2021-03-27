@@ -9,4 +9,5 @@
     <string name="sign_in_to_continue">Sign in to continue</string>
     <string name="drawing_name">Drawing name</string>
     <string name="save_drawing">Save drawing</string>
+    <string name="color_picker">Color picker</string>
 </resources>

@@ -13,33 +13,24 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
-import java.util.Date;
-
-import dev.basjansen.scribble.models.Drawing;
-import dev.basjansen.scribble.models.User;
-import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.views.DrawingView;
-import dev.basjansen.scribble.views.OnDrawingSavedListener;
 import dev.basjansen.scribble.views.SaveDrawingBottomSheetFragment;
 
 public class DrawingActivity extends AppCompatActivity {
     private DrawingView drawingView;
-    private FirebaseAuth firebaseAuth;
-    private DrawingService drawingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         drawingView = findViewById(R.id.drawing_view);
-        drawingService = new DrawingService();
 
         setupDefaultDrawingSettings();
-        setupDrawButtons();
+        setupDrawSheet();
     }
 
     @Override
@@ -84,7 +75,7 @@ public class DrawingActivity extends AppCompatActivity {
         drawingView.setStrokeWidth(15);
     }
 
-    public void setupDrawButtons() {
+    public void setupDrawSheet() {
         Button redColorButton = findViewById(R.id.red_color_button);
         Button blueColorButton = findViewById(R.id.blue_color_button);
         Button blackColorButton = findViewById(R.id.black_color_button);
@@ -95,6 +86,7 @@ public class DrawingActivity extends AppCompatActivity {
         Button setStrokeWidthButtonMedium = findViewById(R.id.adjust_width_button_2);
         Button setStrokeWidthButtonLarge = findViewById(R.id.adjust_width_button_3);
         Button resetButton = findViewById(R.id.reset_button);
+        Button colorPickerButton = findViewById(R.id.color_picker_button);
 
         redColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.RED));
         blueColorButton.setOnClickListener((View v) -> onColorButtonClick(Color.BLUE));
@@ -107,6 +99,15 @@ public class DrawingActivity extends AppCompatActivity {
         setStrokeWidthButtonMedium.setOnClickListener((View v) -> drawingView.setStrokeWidth(15));
         setStrokeWidthButtonLarge.setOnClickListener((View v) -> drawingView.setStrokeWidth(30));
         resetButton.setOnClickListener((View v) -> drawingView.clear());
+
+        colorPickerButton.setOnClickListener((View v) -> {
+            ColorPicker colorPicker = new ColorPicker(this);
+            colorPicker.setColor(drawingView.getColor());
+            colorPicker.show();
+            colorPicker.enableAutoClose();
+
+            colorPicker.setCallback(color -> drawingView.setColor(color));
+        });
     }
 
     public void onColorButtonClick(int color) {
