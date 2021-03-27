@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/gallery"
+        android:title="Gallery"
+        android:icon="@drawable/ic_baseline_dashboard"/>
+
+    <item
+        android:id="@+id/mydrawings"
+        android:title="My Drawings"
+        android:icon="@drawable/ic_baseline_format_paint"/>
+
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_baseline_settings"/>
+
+
+</menu>

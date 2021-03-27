@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                GoogleSignInAccount account = task.getResult(Exception.class);
                 if (account == null)
                     throw new Exception("Google sign in failed");
                 firebaseAuthWithGoogle(account.getIdToken());
