@@ -7,4 +7,6 @@
     <string name="drawing">Drawing</string>
     <string name="background">background</string>
     <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="drawing_name">Drawing name</string>
+    <string name="save_drawing">Save drawing</string>
 </resources>

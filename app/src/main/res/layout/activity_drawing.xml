@@ -1,164 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawing_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+<!--    <dev.basjansen.scribble.views.DrawingView-->
+<!--        android:id="@+id/drawing_view"-->
+<!--        android:layout_width="409dp"-->
+<!--        android:layout_height="535dp"-->
+<!--        android:background="#FFFFFF" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#D5D5D5"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="20dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/button_row_1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center_horizontal|center_vertical"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/black_color_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#000000"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/blue_color_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#1137F8"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/red_color_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#F81111"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/green_color_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#25ED1D"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/yellow_color_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#FFE81E"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/erase_button"-->
+<!--                android:layout_width="37dp"-->
+<!--                android:layout_height="49dp"-->
+<!--                app:backgroundTint="#FFFFFF"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/button_row_2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center_horizontal|center_vertical"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/adjust_width_button_1"-->
+<!--                android:layout_width="17dp"-->
+<!--                android:layout_height="29dp"-->
+<!--                app:backgroundTint="#000000"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/adjust_width_button_2"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="36dp"-->
+<!--                app:backgroundTint="#000000"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/adjust_width_button_3"-->
+<!--                android:layout_width="38dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                app:backgroundTint="#000000"-->
+<!--                app:cornerRadius="100dp" />-->
+
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/reset_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="@string/reset" />-->
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
     <dev.basjansen.scribble.views.DrawingView
         android:id="@+id/drawing_view"
-        android:layout_width="409dp"
-        android:layout_height="535dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="160dp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#D5D5D5"
-        android:orientation="vertical"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drawing_view"
-        app:layout_constraintVertical_bias="0.0">
+    <include layout="@layout/drawing_bottom_sheet" />
 
-        <LinearLayout
-            android:id="@+id/button_row_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/black_color_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#000000"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/blue_color_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#1137F8"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/red_color_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#F81111"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/green_color_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#25ED1D"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/yellow_color_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#FFE81E"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/erase_button"
-                android:layout_width="37dp"
-                android:layout_height="49dp"
-                app:backgroundTint="#FFFFFF"
-                app:cornerRadius="100dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/button_row_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/adjust_width_button_1"
-                android:layout_width="17dp"
-                android:layout_height="29dp"
-                app:backgroundTint="#000000"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/adjust_width_button_2"
-                android:layout_width="25dp"
-                android:layout_height="36dp"
-                app:backgroundTint="#000000"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/adjust_width_button_3"
-                android:layout_width="38dp"
-                android:layout_height="50dp"
-                app:backgroundTint="#000000"
-                app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/reset_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reset" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

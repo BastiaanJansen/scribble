@@ -21,9 +21,8 @@ import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.models.User;
 import dev.basjansen.scribble.services.DrawingService;
 import dev.basjansen.scribble.views.DrawingView;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import dev.basjansen.scribble.views.OnDrawingSavedListener;
+import dev.basjansen.scribble.views.SaveDrawingBottomSheetFragment;
 
 public class DrawingActivity extends AppCompatActivity {
     private DrawingView drawingView;
@@ -63,12 +62,6 @@ public class DrawingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//    }
-
     public boolean isEmptyBitmap(Bitmap bitmap) {
         Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
         return emptyBitmap.sameAs(bitmap);
@@ -80,17 +73,10 @@ public class DrawingActivity extends AppCompatActivity {
             return false;
         }
 
-        saveDrawing( "My new drawing");
-        Toast.makeText(this, "Drawing saved", Toast.LENGTH_SHORT).show();
-        finish();
-        return true;
-    }
+        SaveDrawingBottomSheetFragment drawingBottomSheet = new SaveDrawingBottomSheetFragment(drawingView.getCanvasBitmap(), this::finish);
+        drawingBottomSheet.show(getSupportFragmentManager(), DrawingActivity.class.getName());
 
-    public void saveDrawing(String name) {
-        Bitmap bitmap = drawingView.getCanvasBitmap();
-        String path = "images/" + new Date().getTime() + ".png";
-        Drawing drawing = new Drawing(name, path, User.fromFirebaseUser(firebaseAuth.getCurrentUser()));
-        drawingService.save(bitmap, drawing);
+        return true;
     }
 
     public void setupDefaultDrawingSettings() {
