@@ -29,4 +29,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_navigation"
+        app:itemBackground="@color/blue_200"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/menu_navigation"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
