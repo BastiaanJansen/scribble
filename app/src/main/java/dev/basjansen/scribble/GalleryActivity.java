@@ -1,11 +1,9 @@
 package dev.basjansen.scribble;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,16 +13,15 @@ import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
 
 
-public class MainActivity extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity {
 
     private DrawingService drawingService;
     private DrawingsAdapter drawingsAdapter;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gallery);
         setTitle("Gallery");
 
         drawingService = new DrawingService();
@@ -34,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setupDrawingsList();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setupDrawingsList() {
         RecyclerView drawingsRecycleView = findViewById(R.id.drawings_reclycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -42,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         drawingsRecycleView.setAdapter(drawingsAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
         super.onResume();

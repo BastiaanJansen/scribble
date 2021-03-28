@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     UserService userService = new UserService();
                     userService.save(new User(user.getUid(), user.getDisplayName()));
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, GalleryActivity.class);
                     startActivity(intent);
                 });
     }

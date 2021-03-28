@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="show_recently_used_colors"
+        android:title="Recently used colors"
+        app:iconSpaceReserved="false"
+        app:summary="Show recently used colors" />
+</PreferenceScreen>

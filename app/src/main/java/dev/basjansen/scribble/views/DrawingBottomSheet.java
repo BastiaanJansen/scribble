@@ -1,5 +1,6 @@
 package dev.basjansen.scribble.views;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -39,6 +40,7 @@ import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import dev.basjansen.scribble.R;
+import dev.basjansen.scribble.SettingsActivity;
 
 public class DrawingBottomSheet extends Fragment {
 
@@ -50,6 +52,8 @@ public class DrawingBottomSheet extends Fragment {
     private final DrawingView drawingView;
     private final ColorPicker colorPicker;
     private final List<Integer> recentlyUsedColors;
+
+    private final boolean showRecentlyUsedColors;
 
     private Button redColorButton;
     private Button blueColorButton;
@@ -72,6 +76,7 @@ public class DrawingBottomSheet extends Fragment {
         this.gson = new GsonBuilder().create();
         this.preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         this.recentlyUsedColors = retrieveRecentlyUsedColors();
+        this.showRecentlyUsedColors = preferences.getBoolean(SettingsActivity.SHOW_RECENTLY_USED_COLORS_KEY, true);
     }
 
     @Nullable
@@ -94,7 +99,8 @@ public class DrawingBottomSheet extends Fragment {
 
         setupButtonClickListeners();
 
-        recentlyUsedColors.forEach(this::addRecentlyUsedColorToUI);
+        if (showRecentlyUsedColors)
+            recentlyUsedColors.forEach(this::addRecentlyUsedColorToUI);
 
         return view;
     }
@@ -127,10 +133,13 @@ public class DrawingBottomSheet extends Fragment {
 
         if (recentlyUsedColors.size() >= 6) {
             recentlyUsedColors.remove(0);
-            customizedButtonLayout.removeViewAt(5);
+            if (customizedButtonLayout.getChildCount() >= 5)
+                customizedButtonLayout.removeViewAt(customizedButtonLayout.getChildCount() - 1);
         }
 
-        addRecentlyUsedColorToUI(color);
+        if (showRecentlyUsedColors)
+            addRecentlyUsedColorToUI(color);
+
         recentlyUsedColors.add(color);
 
         saveRecentlyUsedColors();
@@ -140,7 +149,7 @@ public class DrawingBottomSheet extends Fragment {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         layoutParams.setMargins(28, 0, 28, 0);
 
-        Button button = (Button) getLayoutInflater().inflate(R.layout.color_button, null);
+        @SuppressLint("InflateParams") Button button = (Button) getLayoutInflater().inflate(R.layout.color_button, null);
         button.setLayoutParams(layoutParams);
         button.setBackgroundColor(color);
         button.setOnClickListener(v -> selectColor(color));
