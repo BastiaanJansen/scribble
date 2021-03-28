@@ -35,82 +35,91 @@
 
         <LinearLayout
             android:id="@+id/button_row_0"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:paddingLeft="-9dp"
+            android:paddingRight="-9dp" />
 
         <LinearLayout
             android:id="@+id/button_row_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="-10dp"
+            android:paddingRight="-10dp">
 
             <Button
                 android:id="@+id/black_color_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#000000"
                 app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/blue_color_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#1137F8"
                 app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/red_color_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#F81111"
                 app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/green_color_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#25ED1D"
                 app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/yellow_color_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#FFE81E"
                 app:cornerRadius="100dp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/erase_button"
                 android:layout_width="37dp"
                 android:layout_height="49dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 app:backgroundTint="#FFFFFF"
                 app:cornerRadius="100dp" />
 

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }, Exception::printStackTrace);
     }
 
-    public void setupFAB() {
+    private void setupFAB() {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener((View v) -> {

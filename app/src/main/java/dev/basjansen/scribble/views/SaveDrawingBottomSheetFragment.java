@@ -16,8 +16,10 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Date;
+import java.util.Objects;
 
 import dev.basjansen.scribble.R;
 import dev.basjansen.scribble.models.Drawing;
@@ -28,7 +30,7 @@ public class SaveDrawingBottomSheetFragment extends BottomSheetDialogFragment {
 
     private final Bitmap drawingBitmap;
     private final DrawingService drawingService;
-    private final FirebaseAuth firebaseAuth;
+    private final FirebaseUser user;
     private final OnDrawingSavedListener onDrawingSavedListener;
 
     private EditText nameEditText;
@@ -37,7 +39,9 @@ public class SaveDrawingBottomSheetFragment extends BottomSheetDialogFragment {
         this.drawingBitmap = bitmap;
         this.onDrawingSavedListener = onDrawingSavedListener;
         this.drawingService = new DrawingService();
-        this.firebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        this.user = firebaseAuth.getCurrentUser();
     }
 
     @Nullable
@@ -53,7 +57,7 @@ public class SaveDrawingBottomSheetFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    public void onSaveButtonClick(View v) {
+    private void onSaveButtonClick(View v) {
         String name = nameEditText.getText().toString();
 
         if (name.isEmpty()) {
@@ -62,7 +66,7 @@ public class SaveDrawingBottomSheetFragment extends BottomSheetDialogFragment {
         }
 
         String path = "images/" + new Date().getTime() + ".png";
-        Drawing drawing = new Drawing(name, path, User.fromFirebaseUser(firebaseAuth.getCurrentUser()));
+        Drawing drawing = new Drawing(name, path, User.fromFirebaseUser(user));
         drawingService.save(drawingBitmap, drawing);
         dismiss();
 

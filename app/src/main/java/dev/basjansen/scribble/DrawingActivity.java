@@ -56,12 +56,12 @@ public class DrawingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean isEmptyBitmap(Bitmap bitmap) {
+    private boolean isEmptyBitmap(Bitmap bitmap) {
         Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
         return emptyBitmap.sameAs(bitmap);
     }
 
-    public boolean onDoneMenuItemClicked(MenuItem item) {
+    private boolean onDoneMenuItemClicked(MenuItem item) {
         if (isEmptyBitmap(drawingView.getCanvasBitmap())) {
             Toast.makeText(this, "An empty drawing cannot be saved", Toast.LENGTH_SHORT).show();
             return false;
@@ -73,7 +73,7 @@ public class DrawingActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setupDefaultDrawingSettings() {
+    private void setupDefaultDrawingSettings() {
         drawingView.setColor(Color.BLACK);
         drawingView.setStrokeWidth(15);
     }

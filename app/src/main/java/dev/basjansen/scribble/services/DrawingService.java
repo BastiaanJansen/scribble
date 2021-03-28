@@ -31,14 +31,12 @@ public class DrawingService {
     private final FirebaseFirestore db;
     private final StorageReference storageReference;
     private final ObjectMapper objectMapper;
-    private final FirebaseAuth firebaseAuth;
 
     public DrawingService() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         this.storageReference = firebaseStorage.getReference();
         this.objectMapper = new ObjectMapper();
-        this.firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -49,7 +47,6 @@ public class DrawingService {
         }, Throwable::printStackTrace);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void fetch(OnFetchSuccessListener<Drawing[]> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
             db.collection(COLLECTION_PATH).orderBy("createdAt", Query.Direction.DESCENDING).get().addOnSuccessListener((QuerySnapshot queryDocumentSnapshots) -> {
                 Drawing[] drawings = queryDocumentSnapshots

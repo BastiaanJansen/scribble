@@ -2,8 +2,12 @@ package dev.basjansen.scribble.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +17,39 @@ import android.widget.Space;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
 import dev.basjansen.scribble.R;
 
 public class DrawingBottomSheet extends Fragment {
 
-    private final Context context;
+    public static final String RECENTLY_USED_COLORS_KEY = "recently_used_colors";
+
+    private final SharedPreferences preferences;
+    private final Gson gson;
+
     private final DrawingView drawingView;
     private final ColorPicker colorPicker;
     private final List<Integer> recentlyUsedColors;
-
-    private View view;
 
     private Button redColorButton;
     private Button blueColorButton;
@@ -46,17 +66,18 @@ public class DrawingBottomSheet extends Fragment {
     private LinearLayout customizedButtonLayout;
 
     public DrawingBottomSheet(Activity activity, DrawingView drawingView) {
-        this.context = activity;
         this.drawingView = drawingView;
-        this.recentlyUsedColors = new ArrayList<>();
         this.colorPicker = new ColorPicker(activity);
         this.colorPicker.enableAutoClose();
+        this.gson = new GsonBuilder().create();
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        this.recentlyUsedColors = retrieveRecentlyUsedColors();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.drawing_bottom_sheet, container, false);
+        View view = inflater.inflate(R.layout.drawing_bottom_sheet, container, false);
 
         redColorButton = view.findViewById(R.id.red_color_button);
         blueColorButton = view.findViewById(R.id.blue_color_button);
@@ -69,15 +90,16 @@ public class DrawingBottomSheet extends Fragment {
         setStrokeWidthButtonLarge = view.findViewById(R.id.adjust_width_button_3);
         resetButton = view.findViewById(R.id.reset_button);
         colorPickerButton = view.findViewById(R.id.color_picker_button);
+        customizedButtonLayout = (LinearLayout) view.findViewById(R.id.button_row_0);
 
         setupButtonClickListeners();
 
-        customizedButtonLayout = (LinearLayout) view.findViewById(R.id.button_row_0);
+        recentlyUsedColors.forEach(this::addRecentlyUsedColorToUI);
 
         return view;
     }
 
-    public void setupButtonClickListeners() {
+    private void setupButtonClickListeners() {
         redColorButton.setOnClickListener(v -> selectColor(Color.RED));
         blueColorButton.setOnClickListener(v -> selectColor(Color.BLUE));
         blackColorButton.setOnClickListener(v -> selectColor(Color.BLACK));
@@ -97,35 +119,49 @@ public class DrawingBottomSheet extends Fragment {
         });
     }
 
-    public void onColorPickerSelected(int color) {
+    private void onColorPickerSelected(int color) {
         selectColor(color);
 
         if (recentlyUsedColors.contains(color))
             return;
-        addRecentlyUsedColor(color);
-    }
 
-    public void addRecentlyUsedColor(int color) {
         if (recentlyUsedColors.size() >= 6) {
             recentlyUsedColors.remove(0);
             customizedButtonLayout.removeViewAt(5);
         }
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        addRecentlyUsedColorToUI(color);
+        recentlyUsedColors.add(color);
+
+        saveRecentlyUsedColors();
+    }
+
+    private void addRecentlyUsedColorToUI(int color) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        layoutParams.setMargins(28, 0, 28, 0);
 
         Button button = (Button) getLayoutInflater().inflate(R.layout.color_button, null);
         button.setLayoutParams(layoutParams);
         button.setBackgroundColor(color);
         button.setOnClickListener(v -> selectColor(color));
 
-        Space space = new Space(view.getContext());
-        customizedButtonLayout.addView(space);
-
         customizedButtonLayout.addView(button, 0);
-        recentlyUsedColors.add(color);
     }
 
-    public void selectColor(int color) {
+    private void saveRecentlyUsedColors() { ;
+        String json = gson.toJson(recentlyUsedColors);
+        System.out.println(json);
+        preferences.edit().putString(RECENTLY_USED_COLORS_KEY, json).apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Integer> retrieveRecentlyUsedColors() {
+        String json = preferences.getString(RECENTLY_USED_COLORS_KEY, "");
+        List<Double> colors =  gson.fromJson(json, ArrayList.class);
+        return colors == null ? new ArrayList<>() : colors.stream().map(Double::intValue).collect(Collectors.toList());
+    }
+
+    private void selectColor(int color) {
         drawingView.setColor(color);
         drawingView.setErase(false);
         setStrokeWidthButtonSmall.setBackgroundColor(color);
