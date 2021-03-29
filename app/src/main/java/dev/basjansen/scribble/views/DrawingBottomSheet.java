@@ -2,45 +2,30 @@ package dev.basjansen.scribble.views;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Space;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import dev.basjansen.scribble.R;
-import dev.basjansen.scribble.SettingsActivity;
+import dev.basjansen.scribble.SettingsFragment;
 
 public class DrawingBottomSheet extends Fragment {
 
@@ -76,7 +61,7 @@ public class DrawingBottomSheet extends Fragment {
         this.gson = new GsonBuilder().create();
         this.preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         this.recentlyUsedColors = retrieveRecentlyUsedColors();
-        this.showRecentlyUsedColors = preferences.getBoolean(SettingsActivity.SHOW_RECENTLY_USED_COLORS_KEY, true);
+        this.showRecentlyUsedColors = preferences.getBoolean(SettingsFragment.SHOW_RECENTLY_USED_COLORS_KEY, true);
     }
 
     @Nullable

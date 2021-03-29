@@ -1,11 +1,9 @@
 package dev.basjansen.scribble;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,23 +34,5 @@ public class ViewDrawingActivity extends AppCompatActivity {
                 drawingService.downloadBitmap(drawing.getPath(), drawingImageView::setImageBitmap, Exception::printStackTrace);
             }
         }
-
-        BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
-        navigationView.setSelectedItemId(R.id.mydrawings);
-        navigationView.setOnNavigationItemSelectedListener(item -> {
-            switch(item.getItemId()) {
-                case R.id.gallery:
-                    startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
-                    overridePendingTransition( 0, 0);
-                    return true;
-                case R.id.settings:
-                    startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                    overridePendingTransition( 0, 0);
-                    return true;
-                case R.id.mydrawings:
-                    return true;
-            }
-            return false;
-        });
     }
 }

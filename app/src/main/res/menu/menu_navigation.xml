@@ -3,22 +3,20 @@
 
     <item
         android:id="@+id/gallery"
-        android:title="Gallery"
+        android:title="@string/gallery"
         android:checkable="true"
-        android:icon="@drawable/ic_baseline_dashboard"/>
-
+        android:icon="@drawable/ic_baseline_dashboard" />
 
     <item
-        android:id="@+id/mydrawings"
-        android:title="My Drawings"
+        android:id="@+id/my_drawings"
+        android:title="@string/my_drawings"
         android:checkable="true"
         android:icon="@drawable/ic_baseline_format_paint"/>
 
     <item
         android:id="@+id/settings"
-        android:title="Settings"
+        android:title="@string/settings"
         android:checkable="true"
         android:icon="@drawable/ic_baseline_settings"/>
-
 
 </menu>
