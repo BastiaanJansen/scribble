@@ -20,26 +20,24 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
 
         BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.settings);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.settings:
-                        return true;
-                    case R.id.gallery:
-                        startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                    case R.id.mydrawings:
-                        startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                }
-                return false;
+        navigationView.setOnNavigationItemSelectedListener(item -> {
+            switch(item.getItemId()) {
+                case R.id.settings:
+                    return true;
+                case R.id.gallery:
+                    startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
+                case R.id.mydrawings:
+                    startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
             }
+            return false;
         });
 
         if (getFragmentManager().findFragmentById(android.R.id.content) == null) {

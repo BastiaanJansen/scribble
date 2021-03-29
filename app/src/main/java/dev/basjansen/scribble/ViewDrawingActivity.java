@@ -39,23 +39,20 @@ public class ViewDrawingActivity extends AppCompatActivity {
 
         BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.mydrawings);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.gallery:
-                        startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                    case R.id.mydrawings:
-                        return true;
-                }
-                return false;
+        navigationView.setOnNavigationItemSelectedListener(item -> {
+            switch(item.getItemId()) {
+                case R.id.gallery:
+                    startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
+                case R.id.settings:
+                    startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
+                case R.id.mydrawings:
+                    return true;
             }
+            return false;
         });
     }
 }

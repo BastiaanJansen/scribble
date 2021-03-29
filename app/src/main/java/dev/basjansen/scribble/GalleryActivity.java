@@ -35,23 +35,20 @@ public class GalleryActivity extends AppCompatActivity {
 
         BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setSelectedItemId(R.id.gallery);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.mydrawings:
-                        startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                        overridePendingTransition( 0, 0);
-                        return true;
-                    case R.id.gallery:
-                        return true;
-                }
-                return false;
+        navigationView.setOnNavigationItemSelectedListener(item -> {
+            switch(item.getItemId()) {
+                case R.id.mydrawings:
+                    startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
+                case R.id.settings:
+                    startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                    overridePendingTransition( 0, 0);
+                    return true;
+                case R.id.gallery:
+                    return true;
             }
+            return false;
         });
     }
 
