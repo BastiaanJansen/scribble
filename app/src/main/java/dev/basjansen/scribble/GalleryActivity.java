@@ -1,12 +1,15 @@
 package dev.basjansen.scribble;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dev.basjansen.scribble.models.Drawing;
@@ -29,6 +32,27 @@ public class GalleryActivity extends AppCompatActivity {
 
         setupFAB();
         setupDrawingsList();
+
+        BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
+        navigationView.setSelectedItemId(R.id.gallery);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.mydrawings:
+                        startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
+                        overridePendingTransition( 0, 0);
+                        return true;
+                    case R.id.settings:
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        overridePendingTransition( 0, 0);
+                        return true;
+                    case R.id.gallery:
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void setupDrawingsList() {

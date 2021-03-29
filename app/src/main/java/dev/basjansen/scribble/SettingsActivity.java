@@ -1,12 +1,17 @@
 package dev.basjansen.scribble;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceManager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -16,10 +21,30 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
+        navigationView.setSelectedItemId(R.id.settings);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.settings:
+                        return true;
+                    case R.id.gallery:
+                        startActivity(new Intent(getApplicationContext(), GalleryActivity.class));
+                        overridePendingTransition( 0, 0);
+                        return true;
+                    case R.id.mydrawings:
+                        startActivity(new Intent(getApplicationContext(), ViewDrawingActivity.class));
+                        overridePendingTransition( 0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         if (getFragmentManager().findFragmentById(android.R.id.content) == null) {
             getFragmentManager().beginTransaction().add(android.R.id.content, new SettingsFragment()).commit();
         }
-
     }
 
     public static class SettingsFragment extends PreferenceFragment {
