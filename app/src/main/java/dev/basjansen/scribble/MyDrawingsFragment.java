@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.Query;
+
 import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
 
@@ -17,6 +20,7 @@ public class MyDrawingsFragment extends Fragment {
 
     private DrawingService drawingService;
     private DrawingsAdapter drawingsAdapter;
+    private FirebaseAuth firebaseAuth;
 
     public MyDrawingsFragment() {}
 
@@ -24,8 +28,11 @@ public class MyDrawingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        drawingService = new DrawingService();
-        drawingsAdapter = new DrawingsAdapter(getContext());
+        this.drawingService = new DrawingService();
+        this.drawingsAdapter = new DrawingsAdapter(getContext());
+        this.firebaseAuth = FirebaseAuth.getInstance();
+
+        getActivity().setTitle("My drawings");
     }
 
     @Override
@@ -39,7 +46,7 @@ public class MyDrawingsFragment extends Fragment {
 
         setupDrawingsList();
 
-        drawingService.fetch((Drawing[] drawings) -> {
+        drawingService.fetchDrawingsOfUser(firebaseAuth.getCurrentUser().getUid(), (Drawing[] drawings) -> {
             drawingsAdapter.setDrawings(drawings);
             drawingsAdapter.notifyDataSetChanged();
         }, Exception::printStackTrace);

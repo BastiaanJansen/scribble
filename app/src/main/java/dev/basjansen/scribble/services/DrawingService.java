@@ -48,14 +48,9 @@ public class DrawingService {
     }
 
     public void fetch(OnFetchSuccessListener<Drawing[]> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
-            db.collection(COLLECTION_PATH).orderBy("createdAt", Query.Direction.DESCENDING).get().addOnSuccessListener((QuerySnapshot queryDocumentSnapshots) -> {
-                Drawing[] drawings = queryDocumentSnapshots
-                        .getDocuments()
-                        .stream()
-                        .map((DocumentSnapshot document) -> objectMapper.convertValue(document.getData(), Drawing.class))
-                        .toArray(Drawing[]::new);
-                onFetchSuccessListener.onSuccess(drawings);
-            }).addOnFailureListener(onFetchFailureListener::onFailure);
+            db.collection(COLLECTION_PATH).orderBy("createdAt", Query.Direction.DESCENDING).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> onFetchSuccessListener.onSuccess(documentsToDrawings(queryDocumentSnapshots)))
+                    .addOnFailureListener(onFetchFailureListener::onFailure);
     }
 
     public void fetch(String documentPath, OnFetchSuccessListener<Drawing> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
@@ -72,6 +67,12 @@ public class DrawingService {
         });
     }
 
+    public void fetchDrawingsOfUser(String uid, OnFetchSuccessListener<Drawing[]> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
+        db.collection(COLLECTION_PATH).whereEqualTo("user.uid", uid).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> onFetchSuccessListener.onSuccess(documentsToDrawings(queryDocumentSnapshots)))
+                .addOnFailureListener(onFetchFailureListener::onFailure);
+    }
+
     public void downloadBitmap(String documentPath, OnFetchSuccessListener<Bitmap> onFetchSuccessListener, OnFailureListener onFailureListener) {
         final long ONE_MEGABYTE = 1024 * 1024;
         StorageReference imageRef = storageReference.child(documentPath);
@@ -80,6 +81,14 @@ public class DrawingService {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             onFetchSuccessListener.onSuccess(bitmap);
         }).addOnFailureListener(onFailureListener);
+    }
+
+    private Drawing[] documentsToDrawings(QuerySnapshot queryDocumentSnapshots) {
+        return queryDocumentSnapshots
+                .getDocuments()
+                .stream()
+                .map((DocumentSnapshot document) -> objectMapper.convertValue(document.getData(), Drawing.class))
+                .toArray(Drawing[]::new);
     }
 
     private void uploadBitmap(Bitmap bitmap, String path, OnSuccessListener<UploadTask.TaskSnapshot> onSuccessListener, OnFailureListener onFailureListener) {

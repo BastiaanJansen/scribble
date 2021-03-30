@@ -36,8 +36,10 @@ public class GalleryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        drawingService = new DrawingService();
-        drawingsAdapter = new DrawingsAdapter(getContext());
+        getActivity().setTitle("Gallery");
+
+        this.drawingService = new DrawingService();
+        this.drawingsAdapter = new DrawingsAdapter(getContext());
     }
 
     @Override
