@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_baseline_dashboard" />
 
     <item
-        android:id="@+id/my_drawings"
+        android:id="@+id/my_drawings_reclycler_view"
         android:title="@string/my_drawings"
         android:checkable="true"
         android:icon="@drawable/ic_baseline_format_paint"/>
