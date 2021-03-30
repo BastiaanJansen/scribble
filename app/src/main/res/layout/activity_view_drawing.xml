@@ -42,10 +42,12 @@
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:strokeWidth="4dp"
+            app:strokeColor="@color/blue_200">
 
             <ImageView
                 android:id="@+id/image_view"
@@ -55,7 +57,7 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/pattern" />
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
