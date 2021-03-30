@@ -17,9 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import dev.basjansen.scribble.models.User;
-import dev.basjansen.scribble.services.UserService;
-
 public class LoginActivity extends AppCompatActivity {
 
     private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 1;
@@ -79,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
 
-                    UserService userService = new UserService();
-                    userService.save(new User(user.getUid(), user.getDisplayName()));
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 });
