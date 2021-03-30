@@ -68,7 +68,7 @@ public class DrawingService {
     }
 
     public void fetchDrawingsOfUser(String uid, OnFetchSuccessListener<Drawing[]> onFetchSuccessListener, OnFetchFailureListener onFetchFailureListener) {
-        db.collection(COLLECTION_PATH).whereEqualTo("user.uid", uid).get()
+        db.collection(COLLECTION_PATH).orderBy("createdAt", Query.Direction.DESCENDING).whereEqualTo("user.uid", uid).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> onFetchSuccessListener.onSuccess(documentsToDrawings(queryDocumentSnapshots)))
                 .addOnFailureListener(onFetchFailureListener::onFailure);
     }

@@ -1,6 +1,5 @@
 package dev.basjansen.scribble;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,26 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import dev.basjansen.scribble.models.Drawing;
 import dev.basjansen.scribble.services.DrawingService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GalleryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GalleryFragment extends Fragment {
 
     private DrawingService drawingService;
     private DrawingsAdapter drawingsAdapter;
 
     public GalleryFragment() { }
-
-    public static GalleryFragment newInstance() {
-        return new GalleryFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +44,9 @@ public class GalleryFragment extends Fragment {
         drawingService.fetch((Drawing[] drawings) -> {
             drawingsAdapter.setDrawings(drawings);
             drawingsAdapter.notifyDataSetChanged();
+
+            if (drawings.length == 0)
+                getView().findViewById(R.id.no_drawings_available).setVisibility(View.VISIBLE);
         }, Exception::printStackTrace);
     }
 

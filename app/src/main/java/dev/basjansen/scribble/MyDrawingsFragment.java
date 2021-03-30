@@ -49,6 +49,9 @@ public class MyDrawingsFragment extends Fragment {
         drawingService.fetchDrawingsOfUser(firebaseAuth.getCurrentUser().getUid(), (Drawing[] drawings) -> {
             drawingsAdapter.setDrawings(drawings);
             drawingsAdapter.notifyDataSetChanged();
+
+            if (drawings.length == 0)
+                getView().findViewById(R.id.no_my_drawings_available).setVisibility(View.VISIBLE);
         }, Exception::printStackTrace);
     }
 
