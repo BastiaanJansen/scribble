@@ -1,9 +1,12 @@
 package dev.basjansen.scribble;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -16,12 +19,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         getActivity().setTitle("Settings");
 
         Preference button = findPreference("logOutButton");
-        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-
-                return false;
-            }
+        button.setOnPreferenceClickListener(preference -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            return true;
         });
     }
 

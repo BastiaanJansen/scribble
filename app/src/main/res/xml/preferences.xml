@@ -8,8 +8,8 @@
         android:title="Recently used colors"
         app:iconSpaceReserved="false" />
     <Preference
-        android:title="Log out"
         android:key="logOutButton"
         android:summary="Log out of your account"
-        android:layout=" "/>
+        android:title="Log out"
+        app:iconSpaceReserved="false" />
 </PreferenceScreen>
