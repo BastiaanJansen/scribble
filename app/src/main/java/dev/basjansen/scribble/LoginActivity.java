@@ -30,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
 
+        if (isLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -41,6 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         SignInButton googleSignInButton = findViewById(R.id.google_sign_in_button);
 
         googleSignInButton.setOnClickListener(v -> signIn());
+    }
+
+    private boolean isLoggedIn() {
+        return auth.getCurrentUser() != null;
     }
 
     private void signIn() {
