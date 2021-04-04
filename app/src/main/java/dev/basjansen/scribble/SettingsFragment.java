@@ -2,6 +2,7 @@ package dev.basjansen.scribble;
 
 import android.os.Bundle;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -13,6 +14,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onCreate(savedInstanceState);
 
         getActivity().setTitle("Settings");
+
+        Preference button = findPreference("logOutButton");
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                return false;
+            }
+        });
     }
 
     @Override
