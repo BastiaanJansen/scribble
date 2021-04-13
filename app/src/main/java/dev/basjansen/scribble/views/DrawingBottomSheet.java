@@ -80,7 +80,7 @@ public class DrawingBottomSheet extends Fragment {
         setStrokeWidthButtonLarge = view.findViewById(R.id.adjust_width_button_3);
         resetButton = view.findViewById(R.id.reset_button);
         colorPickerButton = view.findViewById(R.id.color_picker_button);
-        customizedButtonLayout = (LinearLayout) view.findViewById(R.id.button_row_0);
+        customizedButtonLayout = view.findViewById(R.id.button_row_0);
 
         setupButtonClickListeners();
 
