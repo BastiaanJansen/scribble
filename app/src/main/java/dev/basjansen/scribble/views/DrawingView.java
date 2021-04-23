@@ -14,6 +14,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * A view which allows users to draw on a canvas
+ */
 public class DrawingView extends View {
 
     private Path drawPath;
